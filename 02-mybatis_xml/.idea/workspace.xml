@@ -131,7 +131,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/linc/Documents/code/mybatis/03-mybatis_params_results",
+    "last_opened_file_path": "/home/linc/Documents/code/mybatis/02-mybatis_xml",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "MavenSettings",
     "vue.rearranger.settings.migration": "true"
@@ -158,6 +158,7 @@
       <updated>1594967742986</updated>
       <workItem from="1594967747787" duration="377000" />
       <workItem from="1683116899672" duration="150000" />
+      <workItem from="1683117812309" duration="14000" />
     </task>
     <servers />
   </component>

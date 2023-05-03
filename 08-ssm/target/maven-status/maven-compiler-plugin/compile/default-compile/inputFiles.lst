@@ -1,0 +1,7 @@
+/home/linc/Documents/code/mybatis/08-ssm/src/main/java/cn/tulingxueyuan/service/IEmpService.java
+/home/linc/Documents/code/mybatis/08-ssm/src/main/java/cn/tulingxueyuan/mapper/EmpMapper.java
+/home/linc/Documents/code/mybatis/08-ssm/src/main/java/cn/tulingxueyuan/controller/EmpController.java
+/home/linc/Documents/code/mybatis/08-ssm/src/main/java/cn/tulingxueyuan/mapper/DeptMapper.java
+/home/linc/Documents/code/mybatis/08-ssm/src/main/java/cn/tulingxueyuan/pojo/Dept.java
+/home/linc/Documents/code/mybatis/08-ssm/src/main/java/cn/tulingxueyuan/service/impl/EmpServiceImpl.java
+/home/linc/Documents/code/mybatis/08-ssm/src/main/java/cn/tulingxueyuan/pojo/Emp.java
