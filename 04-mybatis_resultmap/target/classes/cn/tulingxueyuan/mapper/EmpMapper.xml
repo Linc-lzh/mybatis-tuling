@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tulingxueyuan.mapper.EmpMapper">
+
+
+    <!-- 实现表联结查询的方式：  可以映射map 或者 DTO -->
+    <resultMap id="QueryEmp_Map" type="QueryEmpDTO">
+        <id column="e_id" property="id"></id>
+        <result column="user_name" property="username"></result>
+        <result column="d_id" property="deptId"></result>
+        <result column="dept_name" property="deptName"></result>
+    </resultMap>
+
+    <select id="QueryEmp"  resultMap="QueryEmp_Map">
+        select t1.id as e_id,t1.user_name,t2.id as d_id,t2.dept_name from emp t1
+        INNER JOIN dept t2 on t1.dept_id=t2.id
+        where t1.id=#{id}
+    </select>
+
+
+    <!--嵌套结果   多 对 一  -->
+    <resultMap id="QueryEmp_Map2" type="Emp">
+        <id column="e_id" property="id"></id>
+        <result column="user_name" property="username"></result>
+        <!--
+        association 实现多对一中的  “一”
+            property 指定对象中的嵌套对象属性
+        -->
+        <association property="dept">
+            <id column="d_id" property="id"></id>
+            <id column="dept_name" property="deptName"></id>
+        </association>
+    </resultMap>
+
+    <select id="QueryEmp2"  resultMap="QueryEmp_Map2">
+        select t1.id as e_id,t1.user_name,t2.id as d_id,t2.dept_name from emp t1
+        INNER JOIN dept t2 on t1.dept_id=t2.id
+        where t1.id=#{id}
+    </select>
+
+    <!--嵌套查询（分步查询）   多 对 一
+      联合查询和分步查询区别：   性能区别不大
+                                分部查询支持 懒加载（延迟加载）
+       需要设置懒加载，一定要使用嵌套查询的。
+       要启动懒加载可以在全局配置文件中设置 lazyLoadingEnabled=true
+       还可以单独为某个分步查询设置立即加载 <association fetchType="eager"
+      -->
+    <resultMap id="QueryEmp_Map3" type="Emp">
+        <id column="id" property="id"></id>
+        <result column="user_name" property="username"></result>
+        <!-- association 实现多对一中的  “一”
+            property 指定对象中的嵌套对象属性
+            column  指定将哪个字段传到分步查询中
+            select 指定分步查询的 命名空间+ID
+            以上3个属性是实现分步查询必须的属性
+            fetchType 可选， eager|lazy   eager立即加载   lazy跟随全局配置文件中的lazyLoadingEnabled
+         -->
+        <association property="dept" fetchType="eager"  column="dept_id"  select="cn.tulingxueyuan.mapper.DeptMapper.SelectDept">
+        </association>
+    </resultMap>
+
+    <select id="QueryEmp3"  resultMap="QueryEmp_Map3">
+       select  * from emp where id=#{id}
+    </select>
+
+
+    <!-- 根据部门id所有员工 -->
+    <select id="SelectEmpByDeptId"  resultType="emp">
+        select  * from emp where dept_id=#{id}
+    </select>
+
+</mapper>

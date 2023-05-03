@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tulingxueyuan.mapper.DeptMapper">
+
+    <!--
+        eviction 当缓存达到一定的数量的时候（size的数量），以哪种方式进行回收缓存：
+            LRU – 最近最少使用：移除最长时间不被使用的对象。（默认）
+            FIFO – 先进先出：按对象进入缓存的顺序来移除它们。
+            SOFT – 软引用：基于垃圾回收器状态和软引用规则移除对象。
+            WEAK – 弱引用：更积极地基于垃圾收集器状态和弱引用规则移除对象。
+        flushInterval 刷新时间  毫秒
+        size 可以缓存的数量
+        readOnly 设置数据是否只读
+              true       读取缓存的数据性能更高，会直接获取内存引用
+              false 默认 读取缓存的数据性能更低，会将数据拷贝一份
+        type 二级缓存实现类 org.apache.ibatis.cache.impl.PerpetualCache(可省略)。
+    -->
+    <cache
+            type="org.mybatis.caches.redis.RedisCache"
+            eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="false"/>
+    <!--
+    useCache  是否需要使用二级缓存
+        默认 true 使用
+             false 不使用
+     flushCache 默认是false
+    -->
+    <select id="selectDept" resultType="Dept"   >
+        select * from dept
+        <where>
+            <if test="id!=null and id>0">
+                and id=#{id}
+            </if>
+            <if test="deptName!=null and deptName!=''">
+                and dept_name=#{deptName}
+            </if>
+        </where>
+
+    </select>
+
+    <!--
+    flushCache 默认是true 当执行该SQL就会清空二级缓存
+                    false 就不会清空二级缓存
+    -->
+    <insert id="insert" flushCache="false">
+        insert into dept (dept_name)
+        values (#{deptName})
+    </insert>
+</mapper>

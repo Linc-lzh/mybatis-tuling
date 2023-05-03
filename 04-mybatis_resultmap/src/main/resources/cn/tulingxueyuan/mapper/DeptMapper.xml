@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tulingxueyuan.mapper.DeptMapper">
+
+    <!-- 根据部门id查询部门-->
+    <select id="SelectDept" resultType="dept">
+        SELECT * FROM dept where id=#{id}
+    </select>
+
+    <!-- 嵌套结果： 一对多  查询部门及所有员工 -->
+    <resultMap id="SelectDeptAndEmpsMap" type="Dept">
+        <id column="d_id"  property="id"></id>
+        <id column="dept_name"  property="deptName"></id>
+        <!--
+        <collection  映射一对多中的 “多”
+            property 指定需要映射的“多”的属性，一般声明为List
+            ofType  需要指定list的类型
+        -->
+        <collection property="emps" ofType="Emp" >
+            <id column="e_id" property="id"></id>
+            <result column="user_name" property="username"></result>
+            <result column="create_date" property="createDate"></result>
+        </collection>
+    </resultMap>
+
+    <select id="SelectDeptAndEmps" resultMap="SelectDeptAndEmpsMap">
+        select t1.id as d_id,t1.dept_name,t2.id e_id,t2.user_name,t2.create_date from dept t1
+        LEFT JOIN emp t2 on t1.id=t2.dept_id
+        where t1.id=#{id}
+    </select>
+
+
+    <!-- 嵌套查询（异步查询）： 一对多  查询部门及所有员工 -->
+    <resultMap id="SelectDeptAndEmpsMap2" type="Dept">
+        <id column="d_id"  property="id"></id>
+        <id column="dept_name"  property="deptName"></id>
+        <!--
+        <collection  映射一对多中的 “多”
+            property 指定需要映射的“多”的属性，一般声明为List
+            ofType  需要指定list的类型
+            column 需要将当前查询的字段传递到异步查询的参数
+            select 指定异步查询
+        -->
+        <collection property="emps" ofType="Emp" column="id" select="cn.tulingxueyuan.mapper.EmpMapper.SelectEmpByDeptId" >
+        </collection>
+    </resultMap>
+
+    <select id="SelectDeptAndEmps2" resultMap="SelectDeptAndEmpsMap2">
+        SELECT * FROM dept where id=#{id}
+    </select>
+</mapper>

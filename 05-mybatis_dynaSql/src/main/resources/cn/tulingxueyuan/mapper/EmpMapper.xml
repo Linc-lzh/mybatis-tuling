@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tulingxueyuan.mapper.EmpMapper">
+
+    <!-- 查询Emp 根据id,username ,创建的开始时间和结束时间，根据部门id
+    如果在编写SQL过程中出现特殊字符报错： 1.进行转义
+                                         2.使用cdata <![CDATA[<=]]>
+    -->
+    <!--
+    使用动态SQL:
+    1.实现动态条件SQL
+    <if
+           test 条件表达式 支持OGNL表达式
+      问题： and 需要动态拼接的问题（只有一个条件的情况就不需要and，如果多个条件就必须用and/or 来拼接）
+           解决：1.加一个永远都成立的条件(比如：1=1） , 后面条件都加上and/or就行
+                 2.<where
+                 3.<trim
+    <where 一般会加载动态条件中配合使用， 在有条件的情况下它会自动在所有条件的前面加上WHERE关键字， 还会去掉所有条件前面的AND/OR
+    <trim  它的功能比较灵活、广泛。 它可以用来实现<where节点的功能
+        prefix 在所有包含的SQL前面加上指定的字符串
+       prefixOverrides  在所有包含的SQL前面加上去除指定的字符串
+       suffix 在所有包含的SQL后面加上指定的字符串
+       prefixOverrides  在所有包含的SQL后面加上去除指定的字符串
+
+    -->
+    <select id="QueryEmp" resultType="Emp">
+        <include refid="SelectEmp">
+            <property name="tableName" value="emp"/>
+        </include>
+        <trim prefix="WHERE" prefixOverrides="and|or"  >
+            <if test="id!=null and id>0 ">
+                and  id=#{id}
+            </if>
+            <!--OGNL调用对象的方法-->
+            <if test="username!=null and username.indexOf('徐')>-1 ">
+                and user_name=#{username}
+            </if>
+            <if test="beginDate!=null">
+                and create_date >=#{beginDate}
+            </if>
+            <if test="endDate!=null">
+                and create_date <![CDATA[<=]]> #{endDate}
+            </if>
+            <!--OGNL: gt 是大于
+                调用静态方法 -->
+            <if test="deptId!=null and deptId gt @cn.tulingxueyuan.pojo.Emp@getNum() ">
+                and dept_id=#{deptId}
+            </if>
+        </trim>
+
+        <!--<where>
+            <if test="id!=null and id!='' ">
+                and  id=#{id}
+            </if>
+            <if test="username!=null and username!='' ">
+              and user_name=#{username}
+            </if>
+            <if test="beginDate!=null and beginDate!='' ">
+              and create_date >=#{beginDate}
+            </if>
+            <if test="endDate!=null and endDate!='' ">
+              and create_date <![CDATA[<=]]> #{endDate}
+            </if>
+            <if test="deptId!=null and deptId!='' ">
+              and dept_id=#{deptId}
+            </if>
+        </where>-->
+    </select>
+
+
+    <!--
+    <choose when otherwise
+    多条件取其中一个
+    -->
+    <select id="QueryEmp2" resultType="Emp">
+        <include refid="SelectEmp">
+            <property name="columns" value="id,dept_id"/>
+        </include>
+        <where>
+            <choose>
+                <when test="deptName=='经理'">
+                    dept_id=1
+                </when>
+                <when test="deptName=='普通员工'">
+                    dept_id=2
+                </when>
+                <otherwise>
+                    dept_id=#{id}
+                </otherwise>
+            </choose>
+
+        </where>
+    </select>
+
+    <!--
+    <foreach  循环
+        实现in 范围查询  使用$可以实现但是有sql注入风险
+       collection 需要循环的集合的参数名字
+        item  每次循环使用的接收变量
+        separator 分割符设置（每次循环在结尾添加什么分隔符，会自动去除最后一个结尾的分隔符）
+        open 循环开始添加的字符串
+        close 循环结束添加的字符串
+        index 循环的下标的变量
+    -->
+    <select id="QueryEmp3" resultType="Emp">
+        <include refid="SelectEmp">
+            <property name="columns" value="id,user_name,dept_id"/>
+        </include>
+        <where>
+            <foreach collection="usernames" item="username" separator="," open=" user_name in (" close=")" index="i" >
+                #{username}
+            </foreach>
+        </where>
+    </select>
+
+    <!--
+    <set 用在update语句上面的
+        会自动加上set关键字
+        会自动去除最后一个更新字段的，
+    -->
+    <update id="update">
+        update emp
+        <!--<trim prefix="set" suffixOverrides=",">
+            <if test="username!=null and username!='' ">
+            user_name=#{username},
+            </if>
+            <if test="createDate!=null and createDate!='' ">
+            create_date=#{createDate},
+            </if>
+            <if test="deptId!=null and deptId!='' ">
+            dept_id=#{deptId}
+            </if>
+        </trim>-->
+        <set>
+            <if test="username!=null and username!='' ">
+                user_name=#{username},
+            </if>
+            <if test="createDate!=null">
+                create_date=#{createDate},
+            </if>
+            <if test="deptId!=null and deptId!='' ">
+                dept_id=#{deptId},
+            </if>
+        </set>
+        where  id=#{id}
+    </update>
+
+
+<!-- 实现模糊查询 like '%xx%'
+1可以使用mysql的字符串拼接   1. 空格拼接  2.CONCAT函数
+2可以拼接好再传进来
+3使用bind在Mapper映射文件上下文声明一个变量 <bind>
+-->
+<!--
+ <bind> 在Mapper映射文件上下文声明一个变量
+    name 变量名称
+    value 值（支持OGNL表达式）
+-->
+
+<!--
+sql片段  解决SQL中重复的代码冗余，可以提取出来放在sql片段中
+    1.  <sql 定义sql片段
+            id 唯一标识
+    2.   <include 在SQL中引用SQL片段片段
+            refid 需要引用的SQL片段的id
+            <property 声明变量， 就可以在SQL片段中动态调用，让不同的SQL调用同一个SQL片段达到不同的功能
+                name 变量名
+                value 变量值
+                一般情况使用${}在sql片段中引用.一单引用了，一定保证每个include都声明了该变量
+-->
+    <select id="QueryEmp4" resultType="Emp">
+        <bind name="_username" value="'%'+username+'%' "/>
+        <include refid="SelectEmp">
+            <property name="columns" value="id"/>
+        </include> 
+        where user_name like    #{_username}
+    </select>
+    
+    <sql id="SelectEmp">
+        SELECT ${columns} FROM emp
+    </sql>
+
+    <!--循环逐条插入-->
+    <insert id="insert">
+        insert into emp (user_name,create_date,dept_id)
+            values (#{username},#{createDate},#{deptId})
+    </insert>
+    <!--循环逐条插入-->
+    <insert id="inserBatch">
+        insert into emp (user_name,create_date,dept_id)
+        values
+        <foreach collection="emps" item="emp" separator=",">
+        (#{emp.username},#{emp.createDate},#{emp.deptId})
+        </foreach>
+    </insert>
+
+
+    <!--循环逐条插入-->
+    <insert id="inserBatch">
+        insert into emp (user_name,create_date,dept_id)
+        values
+        <foreach collection="emps" item="emp" separator=",">
+            (#{emp.username},#{emp.createDate},#{emp.deptId})
+        </foreach>
+    </insert>
+
+</mapper>

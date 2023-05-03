@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--就是DOCTYPE后面对应的根节点-->
+<configuration>
+
+    <!--配置外部属性资源文件  通过${}进行引用-->
+    <properties resource="db.properties">
+        <!--可以在定义内部的属性  引用方式是一样的-->
+        <property name="mysql.username" value="root"/>
+    </properties>
+
+    <!--mybatis的设置选项  可以改变mybatis运行时行为-->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--类型别名可为 Java 类型设置一个缩写名字。 它仅用于 XML 配置，意在降低冗余的全限定类名书写-->
+    <typeAliases>
+        <package name="cn.tulingxueyuan.pojo"/>
+    </typeAliases>
+
+
+
+<!-- environments 可以多个环境：
+default 默认的数据库环境
+-->
+    <environments default="development">
+        <!--environment  配置数据库环境  id 指定当前数据库环境的唯一表示，   会被父节点default所设置-->
+        <environment id="development">
+            <!--事务管理器 类型
+              type = JDBC  使用jdbc的事务管理
+                     MANAGED  不运用事务
+            -->
+            <transactionManager type="JDBC"/>
+            <!--数据源
+                type 指定连接池
+                POOLED  指定使用mybatis的连接池
+                UNPOOLED 不使用连接池
+                JNDI JNDI连接池 可以在tomcat中使用
+            -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+
+
+    <!--设置映射器-->
+    <mappers>
+        <!--4种映射方式
+                1.<mapper resource   设置MapperXml 这种方式适用根据statementId进行操作
+                2.<mapper class      设置Mapper接口 这种方式适用接口绑定的方式和注解
+                3.<mapper url        使用磁盘的绝对路径（基本不用）
+                4.<package           根据包设置包下面所有的Mapper接口, 这种方式适用接口绑定的方式和注解
+        -->
+        <!--<mapper resource="EmpMapper.xml"/>-->
+        <!--<mapper class="cn.tulingxueyuan.mapper.EmpMapper"></mapper>-->
+        <package name="cn.tulingxueyuan.mapper"/>
+    </mappers>
+</configuration>

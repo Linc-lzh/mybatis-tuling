@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.tulingxueyuan.mapper.EmpMapper">
+
+    <!--查询员工-->
+    <select id="queryEmp" resultType="emp">
+        select * from emp
+    </select>
+
+</mapper>
