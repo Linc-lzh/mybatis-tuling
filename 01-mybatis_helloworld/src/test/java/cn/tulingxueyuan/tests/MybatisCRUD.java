@@ -54,7 +54,7 @@ public class MybatisCRUD {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
         Emp emp =new Emp();
-        emp.setUsername("徐庶");
+        emp.setUsername("linc lee");
         try {
             Integer result = mapper.insertEmp(emp);
             sqlSession.commit();
@@ -79,8 +79,8 @@ public class MybatisCRUD {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
         Emp emp =new Emp();
-        emp.setId(5);
-        emp.setUsername("张三");
+        emp.setId(4);
+        emp.setUsername("linc new");
         try {
             Integer result = mapper.updateEmp(emp);
             sqlSession.commit();
@@ -106,7 +106,7 @@ public class MybatisCRUD {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
         try {
-            Integer result = mapper.deleteEmp(1);
+            Integer result = mapper.deleteEmp(4);
             sqlSession.commit();
             System.out.println(result);
         }

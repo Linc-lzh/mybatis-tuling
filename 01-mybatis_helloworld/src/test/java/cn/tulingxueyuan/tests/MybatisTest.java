@@ -51,7 +51,7 @@ public class MybatisTest {
     @Test
     public void test01() {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            Emp emp = (Emp) session.selectOne("cn.tulingxueyuan.pojo.EmpMapper.selectEmp", 1);
+            Emp emp = (Emp) session.selectOne("cn.tulingxueyuan.mapper.EmpMapper.selectEmp", 1);
             System.out.println(emp);
         }
     }

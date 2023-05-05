@@ -6,18 +6,18 @@
 
     <!--根据id查询Emp实体-->
     <select id="selectEmp" resultType="cn.tulingxueyuan.pojo.Emp">
-        select * from Emp where id = #{id}
+        select id, user_name as username from emp where id = #{id}
     </select>
 
     <insert id="insertEmp">
         INSERT INTO
-        `mybatis`.`emp` ( `username`)
+        `mybatis`.`emp` ( `user_name`)
         VALUES (#{username});
     </insert>
 
     <update id="updateEmp">
-        UPDATE EMP
-        SET username=#{username}
+        UPDATE emp
+        SET user_name=#{username}
         WHERE id=#{id}
     </update>
 
