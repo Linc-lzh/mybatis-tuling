@@ -14,9 +14,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /***
  * @Author 徐庶   QQ:1092002729
@@ -29,7 +26,7 @@ public class MyBatisTest {
     public void before(){
 
         // 根据全局配置文件的xml构建成SqlSessionFactory
-        String config="mybatis-config.xml";
+        String config= "mybatis-config.xml";
         // 将xml构建成输入流
         InputStream inputStream= null;
         try {

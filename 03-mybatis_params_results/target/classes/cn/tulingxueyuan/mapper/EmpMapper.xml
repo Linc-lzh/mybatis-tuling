@@ -136,7 +136,7 @@
 
     <!--2.使用resultMap 关联 自定义结果集的id-->
     <select id="SelectEmp"  resultType="Emp"  resultMap="emp_map"  >
-        SELECT id,user_name,create_date FROM EMP where id=#{id}
+        SELECT id,user_name,create_date FROM emp where id=#{id}
     </select>
 
 

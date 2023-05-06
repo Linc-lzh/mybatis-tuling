@@ -54,7 +54,7 @@ public class MyBatisTest {
 
             // Mybatis在getMapper就会给我们创建jdk动态代理
             EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
-            System.out.println(mapper.SelectEmp(4));
+            System.out.println(mapper.SelectEmp(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -18,18 +18,18 @@ public class JDBCTest {
         // 2.创建数据连接 DriverManager.getConnection()方法：获取数据库连接
         String url = "jdbc:mysql://localhost:3306/mybatis";
         String user = "root";
-        String password = "123456";
+        String password = "root";
         //3.获取连接
         Connection connection = DriverManager.getConnection(url, user, password);
-        String sql = "SELECT * FROM EMP WHERE id=?";
+        String sql = "SELECT * FROM emp WHERE id=?";
         //4.使用PreparedStatement 预解析sql语句，
         PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1,4);
+        ps.setInt(1,1);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             Emp emp = new Emp();
             emp.setId(rs.getInt("id"));
-            emp.setUsername(rs.getString("username"));
+            emp.setUsername(rs.getString("user_name"));
             System.out.println(emp);
         }
     }
