@@ -22,12 +22,12 @@
         prefix 在所有包含的SQL前面加上指定的字符串
        prefixOverrides  在所有包含的SQL前面加上去除指定的字符串
        suffix 在所有包含的SQL后面加上指定的字符串
-       prefixOverrides  在所有包含的SQL后面加上去除指定的字符串
+       suffixOverrides  在所有包含的SQL后面加上去除指定的字符串
 
     -->
     <select id="QueryEmp" resultType="Emp">
         <include refid="SelectEmp">
-            <property name="tableName" value="emp"/>
+            <property name="columns" value="*"/>
         </include>
         <trim prefix="WHERE" prefixOverrides="and|or"  >
             <if test="id!=null and id>0 ">
@@ -173,11 +173,11 @@ sql片段  解决SQL中重复的代码冗余，可以提取出来放在sql片段
     <select id="QueryEmp4" resultType="Emp">
         <bind name="_username" value="'%'+username+'%' "/>
         <include refid="SelectEmp">
-            <property name="columns" value="id"/>
-        </include> 
+            <property name="columns" value="*"/>
+        </include>
         where user_name like    #{_username}
     </select>
-    
+
     <sql id="SelectEmp">
         SELECT ${columns} FROM emp
     </sql>
@@ -193,16 +193,6 @@ sql片段  解决SQL中重复的代码冗余，可以提取出来放在sql片段
         values
         <foreach collection="emps" item="emp" separator=",">
         (#{emp.username},#{emp.createDate},#{emp.deptId})
-        </foreach>
-    </insert>
-
-
-    <!--循环逐条插入-->
-    <insert id="inserBatch">
-        insert into emp (user_name,create_date,dept_id)
-        values
-        <foreach collection="emps" item="emp" separator=",">
-            (#{emp.username},#{emp.createDate},#{emp.deptId})
         </foreach>
     </insert>
 

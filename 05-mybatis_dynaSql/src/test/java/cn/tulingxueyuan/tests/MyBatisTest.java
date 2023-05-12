@@ -103,7 +103,7 @@ public class MyBatisTest {
             EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
 
             Emp emp = new Emp();
-            emp.setId(4);
+            emp.setId(3);
             emp.setUsername("徐庶老师帅");
 
 

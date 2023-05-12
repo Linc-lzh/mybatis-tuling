@@ -57,7 +57,7 @@ public class MyBatisTest {
         try(SqlSession sqlSession = sqlSessionFactory.openSession()){
             // Mybatis在getMapper就会给我们创建jdk动态代理
             EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
-            QueryEmpDTO dto = mapper.QueryEmp(4);
+            QueryEmpDTO dto = mapper.QueryEmp(1);
             System.out.println(dto);
         }
     }
@@ -70,7 +70,7 @@ public class MyBatisTest {
         try(SqlSession sqlSession = sqlSessionFactory.openSession()){
             // Mybatis在getMapper就会给我们创建jdk动态代理
             EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
-            Emp emp = mapper.QueryEmp2(4);
+            Emp emp = mapper.QueryEmp2(1);
             System.out.println(emp);
         }
     }
@@ -85,7 +85,7 @@ public class MyBatisTest {
         try(SqlSession sqlSession = sqlSessionFactory.openSession()){
             // Mybatis在getMapper就会给我们创建jdk动态代理
             EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
-            Emp emp = mapper.QueryEmp3(4);
+            Emp emp = mapper.QueryEmp3(1);
            // System.out.println(emp.getDept().getDeptName());
             //System.out.println(emp.getUsername());
         }
