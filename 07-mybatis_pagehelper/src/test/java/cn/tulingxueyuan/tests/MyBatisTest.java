@@ -38,7 +38,6 @@ public class MyBatisTest {
         }
         //构建SqlSessionFactory :将全局配置文件和所有的mapper全部加载到Configuration
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
     }
 
     /**
@@ -65,11 +64,8 @@ public class MyBatisTest {
             for (int i:page.getNavigatepageNums()){
                 System.out.print(i+"\t");
             }
-
-
         }
     }
-
 
     /**
      * 基于mybatis伪分页
@@ -80,12 +76,9 @@ public class MyBatisTest {
             // Mybatis在getMapper就会给我们创建jdk动态代理
             EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
 
-
             List<Emp> emps = mapper.queryEmp(new RowBounds(0,10));
 
             System.out.println(emps);
-
-
         }
     }
 }
