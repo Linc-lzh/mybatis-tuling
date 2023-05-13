@@ -43,7 +43,8 @@
 
             &lt;!&ndash;autoRuntimeDialect ： 如果程序使用了动态切换数据库的功能可以开启该参数true，默认是false&ndash;&gt;
 </plugin>-->
-        <plugin interceptor="cn.tulingxueyuan.interceptor.MyPageInterceptor"></plugin>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+<!--        <plugin interceptor="cn.tulingxueyuan.interceptor.MyPageInterceptor"></plugin>-->
 </plugins>
 
 <!-- environments 可以多个环境：
