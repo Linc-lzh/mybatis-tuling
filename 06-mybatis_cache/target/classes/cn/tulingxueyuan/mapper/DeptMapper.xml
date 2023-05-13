@@ -17,6 +17,7 @@
               false 默认 读取缓存的数据性能更低，会将数据拷贝一份
         type 二级缓存实现类 org.apache.ibatis.cache.impl.PerpetualCache(可省略)。
     -->
+<!--    <cache></cache>-->
     <cache
             type="org.mybatis.caches.redis.RedisCache"
             eviction="FIFO"
